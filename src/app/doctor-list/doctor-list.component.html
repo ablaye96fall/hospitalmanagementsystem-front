@@ -1,0 +1,211 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a routerLink="" class="navbar-brand" style="color:white;">HomePage</a>
+  
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarColor02">
+     <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+           <a class="nav-link" (click)="onOpenModal(null!, 'add')">Add <span class="sr-only">(current)</span></a>
+        </li>
+     </ul>
+     <form class="form-inline my-2 my-lg-0">
+        <input type="search" (ngModelChange)="searchDoctorAppointement(key.value)" #key="ngModel" ngModel
+         name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search doctors..." required>
+     </form>
+  </div>
+</nav>
+<p>List of Appointement and details</p>
+<div class="container" id="main-container">
+<div class="row">
+  <div *ngFor="let doctor of doctors" class="col-md-6 col-xl-3">
+     <div class="card m-b-30">
+        <div class="card-body row">
+           <div class="col-6">
+              <a > <img src="{{doctor.imageURL}}" alt=""  class="img-fluid rounded-circle w-60"></a>
+           </div>
+           
+           <div class="col-6 card-title align-self-center mb-0">
+              <h5>{{doctor.doctor_name}}</h5>
+              <p class="m-0">{{doctor.doctor_speciality}}</p>
+              <!-- <p class="m-0">NumberID:{{doctor.doctor_id}}</p> -->
+           </div>
+           
+        </div>
+        <ul class="list-group list-group-flush">
+           <li class="list-group-item"><i class="fa fa-envelope float-right"></i>doctor_education: {{doctor.doctor_education}}</li>
+           <li class="list-group-item"><i class="fa fa-phone float-right"></i>appointement_date: {{doctor.appointement_date}}</li>
+           <li class="list-group-item"><i class="fa fa-envelope float-right"></i>appointement_day: {{doctor.appointement_day}}</li>
+           <li class="list-group-item"><i class="fa fa-phone float-right"></i>available_time: {{doctor.available_time}}</li>
+        </ul>
+      
+        <div class="card-body">
+           <div class="float-right btn-group btn-group-sm">
+              <a (click)="onOpenModal(doctor, 'edit')" class="btn btn-white tooltips" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i>✏ more details</a>
+              &nbsp;
+              <a (click)="onOpenModal(doctor, 'delete')" class="btn btn-black tooltips" data-placement="top" data-original-title="Delete"><i class="fa fa-times"></i>delete❌</a>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
+
+<!-- Add Doctor Modal -->
+<div class="modal fade" id="addDoctorModal" tabindex="-1" role="dialog" aria-labelledby="addDoctorModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="addDoctorModalLabel">Add Doctors-Schedule</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <form #addForm="ngForm" (ngSubmit)="onAddDoctor(addForm)">
+          <div class="form-group">
+             <label for="doctor_name">Doctor_Name</label>
+             <input type="text" ngModel name ="doctor_name" class="form-control" id="doctor_name" placeholder="Doctor_Name" required>
+          </div>
+          <div class="form-group">
+             <label for="doctor_education">Doctor_Education</label>
+             <input type="text" ngModel name ="doctor_education" class="form-control" id="doctor_education" placeholder="Doctor_Education" required>
+          </div>
+          <div class="form-group">
+             <label for="doctor_speciality">Doctor_Speciality</label>
+             <input type="text" ngModel name ="doctor_speciality" class="form-control" id="doctor_speciality" placeholder="Doctor_Speciality" required>
+          </div>
+          <div class="form-group">
+             <label for="appointement_date">Appointement_Date</label>
+             <input type="date" ngModel name ="appointement_date" class="form-control" id="appointement_date" placeholder="Appointement_Date" required>
+          </div>
+          <div class="form-group">
+            <label for="appointement_day">Appointement_Day</label>
+            <input type="text" ngModel name ="appointement_day" class="form-control" id="appointement_day" placeholder="Appointement_Day" required>
+         </div>
+         <div class="form-group">
+          <label for="available_time">Available_Time</label>
+          <input type="time" ngModel name ="available_time" class="form-control" id="available_time" placeholder="Available_Time" required>
+       </div>
+          <div class="form-group">
+             <label for="imageURL">Picture</label>
+             <input type="text" ngModel name="imageURL" class="form-control" id="imageURL" placeholder="Image URL" required>
+          </div>
+          <div class="form-group">
+            <label for="patient_name">Patient_Name</label>
+          <input type="text" ngModel="{{editDoctor?.patient_name}}" name="patient_name" class="form-control" id="patient_name" name="patient_name" placeholder="patient_name">
+         </div>
+         <div class="form-group">
+            <label for="patient_age">Patient_Age</label>
+          <input type="text" ngModel="{{editDoctor?.patient_age}}" name="patient_age" class="form-control" id="patient_age" name="patient_age" placeholder="patient_age">
+         </div>
+         <div class="form-group">
+            <label for="patient_blood_group">Patient_Blood_group</label>
+          <input type="text" ngModel="{{editDoctor?.patient_blood_group}}" name="patient_blood_group" class="form-control" id="patient_blood_group" name="patient_blood_group" placeholder="patient_blood_group">
+         </div> 
+          <div class="modal-footer">
+             <button type="button" id="add-doctor-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save </button>
+          </div> 
+          </form>
+       </div>
+    </div>
+  </div>
+  </div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="updateDoctorModal" tabindex="-1" role="dialog" aria-labelledby="doctorEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="updateDoctorModalLabel">Edit Doctor {{editDoctor?.doctor_name}}</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <form #editForm="ngForm">
+              <div class="form-group">
+                 <label for=`doctor_name`>Doctor_Name</label>
+                 <input type="text" ngModel="{{editDoctor?.doctor_name}}" name="doctor_name" class="form-control" id="doctor_name" aria-describedby="emailHelp" placeholder="Doctor_Name">
+              </div>
+              <input type="hidden" ngModel="{{editDoctor?.doctor_id}}" name="doctor_id" class="form-control" id="doctor_id" placeholder="doctor_id">
+               
+              <div class="form-group">
+                 <label for="doctor_education">Doctor_Education</label>
+                 <input type="text" ngModel="{{editDoctor?.doctor_education}}" name="doctor_education" class="form-control" id="doctor_education" placeholder="Doctor_Education">
+              </div>
+              <div class="form-group">
+                 <label for="doctor_speciality">Doctor_Speciality</label>
+                 <input type="text" ngModel="{{editDoctor?.doctor_speciality}}" name="doctor_speciality" class="form-control" id="doctor_speciality" placeholder="Doctor_Speciality">
+              </div>
+              <div class="form-group">
+                 <label for="appointement_date">Appointement_Date</label>
+                 <input type="text" ngModel="{{editDoctor?.appointement_date}}" name="appointement_date" class="form-control" id="appointement_date" name="appointement_date" placeholder="Appointement_Date">
+              </div>
+              <div class="form-group">
+                <label for="appointement_date">Appointement_Day</label>
+                <input type="text" ngModel="{{editDoctor?.appointement_day}}" name="appointement_day" class="form-control" id="appointement_day" name="appointement_day" placeholder="Appointement_Day">
+             </div>
+             <div class="form-group">
+              <label for="available_time">Available_Time</label>
+              <input type="time" ngModel="{{editDoctor?.available_time}}" name="available_time" class="form-control" id="available_time" name="available_time" placeholder="Available_Time">
+           </div>
+           <div class="form-group">
+            <label for="imageURL">imageURL</label>
+          <input type="text" ngModel="{{editDoctor?.imageURL}}" name="imageURL" class="form-control" id="imageURL" name="imageURL" placeholder="imageURL">
+         </div>
+         <div class="form-group">
+            <label for="patient_name">Patient_Name</label>
+          <input type="text" ngModel="{{editDoctor?.patient_name}}" name="patient_name" class="form-control" id="patient_name" name="patient_name" placeholder="patient_name">
+         </div>
+         <div class="form-group">
+            <label for="patient_age">Patient_Age</label>
+          <input type="text" ngModel="{{editDoctor?.patient_age}}" name="patient_age" class="form-control" id="patient_age" name="patient_age" placeholder="patient_age">
+         </div>
+         <div class="form-group">
+            <label for="patient_blood_group">Patient_Blood_group</label>
+          <input type="text" ngModel="{{editDoctor?.patient_blood_group}}" name="patient_blood_group" class="form-control" id="patient_blood_group" name="patient_blood_group" placeholder="patient_blood_group">
+         </div>
+               
+              <div class="modal-footer">
+                 <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                 <button (click)="onUpdateDoctor(editForm.value)" data-dismiss="modal" class="btn btn-primary">Save Changes </button>
+              </div>
+           </form>
+        </div>
+     </div>
+  </div>
+</div> 
+
+<!--Delete Modal-->  
+
+  <div class="modal fade" id="deleteDoctorModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="deleteModelLabel">Delete Doctor</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <p>Are you sure you want to delete Doctor {{deleteDoctor?.doctor_name}}?</p>
+           <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button (click)="onDeleteDoctor(deleteDoctor.doctor_id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+           </div>
+        </div>
+     </div>
+  </div>
+</div> 
+</div> 
+
+   <!-- Notification for no employees -->
+  
+ <div *ngIf="doctors?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+<div class="alert alert-info" role="alert">
+  <h4 class="alert-heading">NO DOCTORS!</h4>
+  <p>No doctors were found.</p>
+</div>
+</div> 

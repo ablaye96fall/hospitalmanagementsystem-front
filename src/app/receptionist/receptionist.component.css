@@ -1,0 +1,48 @@
+
+
+
+#main_wrapper
+{
+	background-color:darkgray;
+	border: 2px solid black;
+	border-radius:5px;
+	width:100%;
+	margin:0px auto;
+	text-align:center;
+}
+#main_section div   img
+{
+	
+	 width:200px;
+	height:150px; 
+} 
+#main_section div 
+{
+	display:inline-block;
+	background-color:cornflowerblue;
+	margin-right:2px;
+	margin:5px;
+	border: 2px solid white;
+	border-radius:5px;
+	padding:5px;
+	text-align:center;
+	width:250px;
+	vertical-align:top;
+	height:200px;
+}
+#main_section div h1
+{
+	text-decoration:none;
+	color:white;
+	font:20px bold tahoma;
+
+}
+
+h2{
+    color: darkgreen;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 40px;
+    background-color: white;
+    
+    
+}
